@@ -4,6 +4,13 @@ let WIDTH = 640;
 let HEIGHT = 640;
 let frequency = 30;
 let time = 0; //読み込みからの時間
+let run = true;
+
+let keys = new Key();
+
+let bg;
+let player;
+let fish;
 
 //--------------------------------------------------------------
 window.onload = () => {
@@ -22,6 +29,12 @@ window.onload = () => {
   }
 }
 
+const initial = () => {
+  bg = new BackGround();
+  player = new Player({x:320,y:320});
+  fish = new EatableFish5({x:200,y:200})
+}
+
 const main = () => {
   draw();
   update();
@@ -29,8 +42,11 @@ const main = () => {
 }
 
 const draw = () => {
-
+  bg.draw();
+  player.draw();
+  fish.draw();
 }
 const update = () => {
-
+  player.update();
+  console.log(collision(player,fish))
 }

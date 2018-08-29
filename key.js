@@ -1,7 +1,3 @@
-/*
- * 他ファイルからは keys を使ってください
- */
-
 class Key {
 	constructor() {
 		this._right
