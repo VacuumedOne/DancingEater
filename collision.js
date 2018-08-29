@@ -1,4 +1,4 @@
-function collision(player,fish){
+const collision = (player,fish) => {
   let px = player.pos.x;
   let py = player.pos.y;
   let pw = player.size.w;

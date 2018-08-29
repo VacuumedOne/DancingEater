@@ -19,9 +19,19 @@ class Player extends GameObject {
     this.size = {w:50,h:30};
   }
   draw(){
-    ctx.drawImage(this.image,this.pos.x-this.size.w/2 ,
-                             this.pos.y-this.size.h/2 ,
-                             this.size.w,this.size.h)
+    if(this.vel.x <= 0){
+      ctx.drawImage(this.image,this.pos.x-this.size.w/2 ,
+                               this.pos.y-this.size.h/2 ,
+                               this.size.w,this.size.h)
+    }else{
+      ctx.save()
+      ctx.scale(-1,1);
+      ctx.drawImage(this.image,-this.pos.x-this.size.w/2 ,
+                               this.pos.y-this.size.h/2 ,
+                               this.size.w,this.size.h)
+      ctx.restore();
+    }
+
   }
   update(){
     switch(this.state){
@@ -69,52 +79,92 @@ class Player extends GameObject {
     this.acc.y = 0;
     //this.acc.x -= this.vel.x/5;
     //this.acc.y -= this.vel.y/5;
+    if(this.pos.x-this.size.w/2<0){
+      this.pos.x=this.size.w/2;
+    }
+    if(this.pos.x+this.size.w/2>640){
+      this.pos.x=640-this.size.w/2;
+    }
+    if(this.pos.y-this.size.h/2<160){
+      this.pos.y=160+this.size.h/2;
+    }
+    if(this.pos.y+this.size.h/2>640){
+      this.pos.y=640-this.size.h/2;
+    }
   }
 }
 
 class Fish extends GameObject {
-  constructor(pos,path){
+  constructor(pos,path,vel){
     super(pos,path);
+    this.vel = vel;
+    this.alive = true;
   }
   draw(){
-    ctx.drawImage(this.image,this.pos.x-this.size.w/2 ,
-                        this.pos.y-this.size.h/2 ,
-                        this.size.w,this.size.h)
+    if(this.vel.x <= 0){
+      ctx.drawImage(this.image,this.pos.x-this.size.w/2 ,
+                               this.pos.y-this.size.h/2 ,
+                               this.size.w,this.size.h)
+    }else{
+      ctx.save()
+      ctx.scale(-1,1);
+      ctx.drawImage(this.image,-this.pos.x-this.size.w/2 ,
+                               this.pos.y-this.size.h/2 ,
+                               this.size.w,this.size.h)
+      ctx.restore();
+    }
+  }
+  update(){
+    if(this.alive){
+      this.move()
+      if(this.pos.x-this.size.w/2<-100){
+        this.alive = false;
+        existFish -= 1;
+      }
+      if(this.pos.x+this.size.w/2>740){
+        this.alive = false;
+        existFish -= 1;
+      }
+    }
+  }
+  move(){
+    this.pos.x += this.vel.x;
+    this.pos.y += this.vel.y;
   }
 }
 class EatableFish1 extends Fish {
-  constructor(pos){
-    super(pos,"asset/fish1.png");
+  constructor(pos,vel){
+    super(pos,"asset/fish1.png",vel);
     this.size = {w:30,h:20};
   }
 }
 class EatableFish2 extends Fish {
-  constructor(pos){
-    super(pos,"asset/fish2.png");
+  constructor(pos,vel){
+    super(pos,"asset/fish2.png",vel);
     this.size = {w:67,h:45};
   }
 }
 class EatableFish3 extends Fish {
-  constructor(pos){
-    super(pos,"asset/fish4.png");
+  constructor(pos,vel){
+    super(pos,"asset/fish4.png",vel);
     this.size = {w:105,h:70};
   }
 }
 class EatableFish4 extends Fish {
-  constructor(pos){
-    super(pos,"asset/fish5.png");
+  constructor(pos,vel){
+    super(pos,"asset/fish5.png",vel);
     this.size = {w:120,h:100};
   }
 }
 class EatableFish5 extends Fish {
-  constructor(pos){
-    super(pos,"asset/fish6.png");
+  constructor(pos,vel){
+    super(pos,"asset/fish6.png",vel);
     this.size = {w:195,h:130};
   }
 }
 class EnemyFish extends Fish {
-  constructor(pos){
-    super(pos,"asset/enemy1.png");
+  constructor(pos,vel){
+    super(pos,"asset/enemy1.png",vel);
   }
 }
 

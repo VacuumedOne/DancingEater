@@ -12,6 +12,11 @@ let bg;
 let player;
 let fish;
 
+let phaze = 0;
+let maxFish = 5;
+let existFish = 0;
+
+let score = 0;
 //--------------------------------------------------------------
 window.onload = () => {
 
@@ -32,7 +37,7 @@ window.onload = () => {
 const initial = () => {
   bg = new BackGround();
   player = new Player({x:320,y:320});
-  fish = new EatableFish5({x:200,y:200})
+  fish = [];
 }
 
 const main = () => {
@@ -42,11 +47,27 @@ const main = () => {
 }
 
 const draw = () => {
+  ctx.clearRect(0,0,WIDTH,HEIGHT)
   bg.draw();
   player.draw();
-  fish.draw();
+  for(let f of fish){
+    if(f.alive){
+      f.draw();
+    }
+  }
+  ctx.fillStyle="rgb(0,0,0)"
+  ctx.font="25px 'Arial'"
+  ctx.fillText(score,50,140)
 }
 const update = () => {
   player.update();
-  console.log(collision(player,fish))
+  generate()
+  for(let f of fish){
+    f.update();
+    if(f.alive && collision(player,f)){
+      f.alive = false;
+      existFish -= 1;
+      score += 100
+    }
+  }
 }
